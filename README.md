@@ -400,6 +400,14 @@ The most basic level of transaction isolation is **read committed**, which simpl
 
 Read committed isolation doesn't protect against **read skew**, where a transaction reads different parts from the database in different points of time, this can be cause issues for situations like backups, analytic queries, or integrity checks.
 
+| 能保证  | 不能保证     |
+| ---- | -------- |
+| ❌ 脏读 | ❌ 不可重复读  |
+|      | ❌ 读偏差    |
+|      | ❌ 幻读     |
+|      | ❌ 写偏差    |
+|      | ❌ 跨多行一致性 |
+
 The solution to read skews is **snapshot isolation**, where each transaction reads from a consistent snapshot of the database, as if it was frozen at a particular point in time. It is usually implemented using write locks, but readers doesn't require any locks.
 
 Snapshot isolation reads differ from read committed in that it keeps *several* versions of an object instead of just two.
