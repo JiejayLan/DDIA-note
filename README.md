@@ -388,6 +388,7 @@ Retrying aborted transactions isn't prefect because if the network failed while 
 
 #### Weak Isolation Levels
 
+
 Concurrency bugs are hard to find by testing, for that, databases have long tried to hide it by providing *transaction isolation*, especially *serializable isolation*. However, due to its performance cost, systems use weaker levels of isolations more commonly, which protect against *some* concurrency issues, but not all.
 
 Many popular relational databases that are considered "ACID" use weak isolation themselves.
@@ -399,14 +400,6 @@ The most basic level of transaction isolation is **read committed**, which simpl
 **Dirty writes** is when a transaction write overwrites another transaction's uncommitted write, this is useful because if the transaction updates multiple objects, dirty writes can lead to bad outcome, however, preventing it still doesn't prevent some other race conditions. Most databases prevents dirty writes by using row-level locks.
 
 Read committed isolation doesn't protect against **read skew**, where a transaction reads different parts from the database in different points of time, this can be cause issues for situations like backups, analytic queries, or integrity checks.
-
-| 能保证  | 不能保证     |
-| ---- | -------- |
-| ❌ 脏读 | ❌ 不可重复读  |
-|      | ❌ 读偏差    |
-|      | ❌ 幻读     |
-|      | ❌ 写偏差    |
-|      | ❌ 跨多行一致性 |
 
 The solution to read skews is **snapshot isolation**, where each transaction reads from a consistent snapshot of the database, as if it was frozen at a particular point in time. It is usually implemented using write locks, but readers doesn't require any locks.
 
